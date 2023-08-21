@@ -1,7 +1,10 @@
 import { useEffect, useReducer } from "react";
 import "./App.css";
 import Header from "./Header";
-import Mid from "./Mid";
+import Main from "./Main";
+import Loader from "./Loader";
+import Error from "./Error";
+import StartScreen from "./StartScreen";
 // import DateCounter from "./DateCounter";
 
 const initialState = { questions: [], status: "loading" };
@@ -17,8 +20,13 @@ function reducer(state, action) {
   }
 }
 
+console.log("testing");
+
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  //destructured state below
+  const [{ questions, status }, dispatch] = useReducer(reducer, initialState);
+
+  const numQuestions = questions.length;
 
   useEffect(() => {
     fetch("http://localhost:8000/questions")
@@ -31,10 +39,11 @@ function App() {
       <div className="app">
         <Header />
 
-        <Mid>
-          <p>1/15</p>
-          <p>Question?</p>
-        </Mid>
+        <Main>
+          {status === "loading" && <Loader />}
+          {status === "error" && <Error />}
+          {status === "ready" && <StartScreen numQuestions={numQuestions} />}
+        </Main>
       </div>
     </>
   );
