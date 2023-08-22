@@ -6,7 +6,6 @@ import Loader from "./components/Loader";
 import Error from "./components/Error";
 import StartScreen from "./components/StartScreen";
 import Question from "./components/Question";
-// import DateCounter from "./DateCounter";
 
 const initialState = {
   questions: [],
