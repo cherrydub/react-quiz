@@ -79,7 +79,11 @@ function App() {
           )}
           {status === "active" && (
             <>
-              <Progress index={index} numQuestions={numQuestions} />
+              <Progress
+                index={index}
+                numQuestions={numQuestions}
+                answer={answer}
+              />
               <Score points={points} totalPointsReduce={totalPointsReduce} />
               <Question
                 question={questions[index]}
