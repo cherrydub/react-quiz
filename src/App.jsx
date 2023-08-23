@@ -6,6 +6,9 @@ import Loader from "./components/Loader";
 import Error from "./components/Error";
 import StartScreen from "./components/StartScreen";
 import Question from "./components/Question";
+import NextButton from "./components/NextButton";
+import Progress from "./components/Progress";
+import Score from "./components/Score";
 
 const initialState = {
   questions: [],
@@ -33,22 +36,29 @@ function reducer(state, action) {
             ? state.points + question.points
             : state.points,
       };
+    case "nextQuestion":
+      return { ...state, index: state.index++, answer: null };
     default:
       throw new Error("Action unknown");
   }
 }
 
-console.log("testing");
-
 function App() {
   //destructured state below
   // const [state, dispatch] = useReducer(reducer, initialState);
-  const [{ questions, status, index, answer }, dispatch] = useReducer(
+  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
     reducer,
     initialState
   );
 
   const numQuestions = questions.length;
+
+  const totalPointsReduce = questions.reduce(
+    (total, obj) => total + obj.points,
+    0
+  );
+
+  // console.log(totalPointsReduce);
 
   useEffect(() => {
     fetch("http://localhost:8000/questions")
@@ -68,11 +78,16 @@ function App() {
             <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
           )}
           {status === "active" && (
-            <Question
-              question={questions[index]}
-              dispatch={dispatch}
-              answer={answer}
-            />
+            <>
+              <Progress index={index} numQuestions={numQuestions} />
+              <Score points={points} totalPointsReduce={totalPointsReduce} />
+              <Question
+                question={questions[index]}
+                dispatch={dispatch}
+                answer={answer}
+              />
+              <NextButton dispatch={dispatch} answer={answer} />
+            </>
           )}
         </Main>
       </div>

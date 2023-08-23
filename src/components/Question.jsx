@@ -7,7 +7,11 @@ export default function Question({ question, dispatch, answer }) {
       <h4>{question.question}</h4>
       <Options question={question} dispatch={dispatch} answer={answer} />
 
-      {answer !== null ? <button>next</button> : ""}
+      {/* {answer !== null ? (
+        <button onClick={() => dispatch({ type: "nextQuestion" })}>next</button>
+      ) : (
+        ""
+      )} */}
     </div>
   );
 }
