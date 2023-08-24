@@ -16,18 +16,18 @@ export default function FinishedScreen({
   if (percentage >= 0 && percentage < 50) emoji = `😬`;
 
   return (
-    <div>
+    <>
       <p className="result">
-        You scored <strong>{points}</strong> out of {maximumPoints} (
-        {Math.ceil(percentage)}%) {emoji}
+        <span>{emoji}</span> You scored <strong>{points}</strong> out of{" "}
+        {maximumPoints} ({Math.ceil(percentage)}%)
       </p>
-      <p className="highscore">(Highscore: {highscore})</p>
+      <p className="highscore">(Highscore: {highscore} points)</p>
       <button
         className="btn btn-ui"
-        onClick={() => dispatch({ type: "start" })}
+        onClick={() => dispatch({ type: "restart" })}
       >
-        Retake Quiz
+        Restart quiz
       </button>
-    </div>
+    </>
   );
 }
