@@ -9,6 +9,7 @@ import Question from "./components/Question";
 import NextButton from "./components/NextButton";
 import Progress from "./components/Progress";
 import Score from "./components/Score";
+import FinishedScreen from "./components/FinishedScreen";
 
 const initialState = {
   questions: [],
@@ -40,6 +41,8 @@ function reducer(state, action) {
       return { ...state, index: state.index++, answer: null };
     default:
       throw new Error("Action unknown");
+    case "finished":
+      return { ...state, status: "finished" };
   }
 }
 
@@ -51,7 +54,10 @@ function App() {
     initialState
   );
 
+  console.log("🚀 ~ file: App.jsx:51 ~ App ~ questions:", questions);
+
   const numQuestions = questions.length;
+  console.log("🚀 ~ file: App.jsx:56 ~ App ~ numQuestions:", numQuestions);
 
   const totalPointsReduce = questions.reduce(
     (total, obj) => total + obj.points,
@@ -90,8 +96,17 @@ function App() {
                 dispatch={dispatch}
                 answer={answer}
               />
-              <NextButton dispatch={dispatch} answer={answer} />
+              <NextButton
+                index={index}
+                numQuestions={numQuestions}
+                dispatch={dispatch}
+                answer={answer}
+              />
             </>
+          )}
+
+          {status === "finished" && (
+            <FinishedScreen points={points} maximumPoints={totalPointsReduce} />
           )}
         </Main>
       </div>
