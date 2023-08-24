@@ -11,7 +11,7 @@ export default function Options({ question, dispatch, answer }) {
             hasAnswered
               ? index === question.correctOption
                 ? "correct"
-                : ""
+                : "wrong"
               : ""
           }
           `}
