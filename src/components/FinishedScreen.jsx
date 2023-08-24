@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function FinishedScreen({ points, maximumPoints }) {
+export default function FinishedScreen({
+  points,
+  maximumPoints,
+  highscore,
+  dispatch,
+}) {
   const percentage = (points / maximumPoints) * 100;
 
   let emoji;
@@ -14,9 +19,15 @@ export default function FinishedScreen({ points, maximumPoints }) {
     <div>
       <p className="result">
         You scored <strong>{points}</strong> out of {maximumPoints} (
-        {Math.ceil(percentage)}) {emoji}
+        {Math.ceil(percentage)}%) {emoji}
       </p>
-      <p className="highscore">(Highscore: X points)</p>
+      <p className="highscore">(Highscore: {highscore})</p>
+      <button
+        className="btn btn-ui"
+        onClick={() => dispatch({ type: "start" })}
+      >
+        Retake Quiz
+      </button>
     </div>
   );
 }

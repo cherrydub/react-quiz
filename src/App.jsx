@@ -17,6 +17,7 @@ const initialState = {
   index: 0,
   answer: null,
   points: 0,
+  highscore: 0,
 };
 
 function reducer(state, action) {
@@ -26,7 +27,7 @@ function reducer(state, action) {
     case "dataFailed":
       return { ...state, status: "error" };
     case "start":
-      return { ...state, status: "active" };
+      return { ...state, status: "active", index: 0, answer: null, points: 0 };
     case "newAnswer":
       const question = state.questions.at(state.index);
       return {
@@ -42,17 +43,20 @@ function reducer(state, action) {
     default:
       throw new Error("Action unknown");
     case "finished":
-      return { ...state, status: "finished" };
+      return {
+        ...state,
+        status: "finished",
+        highscore:
+          state.points > state.highscore ? state.points : state.highscore,
+      };
   }
 }
 
 function App() {
   //destructured state below
   // const [state, dispatch] = useReducer(reducer, initialState);
-  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [{ questions, status, index, answer, points, highscore }, dispatch] =
+    useReducer(reducer, initialState);
 
   console.log("🚀 ~ file: App.jsx:51 ~ App ~ questions:", questions);
 
@@ -106,7 +110,12 @@ function App() {
           )}
 
           {status === "finished" && (
-            <FinishedScreen points={points} maximumPoints={totalPointsReduce} />
+            <FinishedScreen
+              highscore={highscore}
+              points={points}
+              maximumPoints={totalPointsReduce}
+              dispatch={dispatch}
+            />
           )}
         </Main>
       </div>
